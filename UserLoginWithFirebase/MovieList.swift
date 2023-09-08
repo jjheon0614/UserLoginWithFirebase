@@ -38,7 +38,7 @@ struct MovieList: View {
                 }
                 .onDelete(perform: removeMovie)
             }
-            .navigationTitle("All Movies")
+            .navigationTitle("All Movie")
             }
             }
             }
