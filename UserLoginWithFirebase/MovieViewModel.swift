@@ -16,29 +16,52 @@ class MovieViewModel: ObservableObject {
     
     
     init() {
-        getAllMovieData()
+//        getAllMovieData()
+        getAllMovieDataFromUser1()
     }
     
     
-    func getAllMovieData() {
-    // Retrieve the "movies" document
-    db.collection("movies").addSnapshotListener { (querySnapshot, error) in
-        guard let documents = querySnapshot?.documents else {
-            print("No documents")
-            
-            return
-            
-        }
-            // Loop to get the "name" field inside each movie document
-        self.movies = documents.map { (queryDocumentSnapshot) -> Movie in
-            let data = queryDocumentSnapshot.data()
-            let name = data["name"] as? String ?? ""
-            
-            
-            return Movie(name: name, documentID: queryDocumentSnapshot.documentID)
-        }
+//    func getAllMovieData() {
+//        // Retrieve the "movies" document
+//        db.collection("movies").addSnapshotListener { (querySnapshot, error) in
+//            guard let documents = querySnapshot?.documents else {
+//                print("No documents")
+//
+//                return
+//
+//            }
+//                // Loop to get the "name" field inside each movie document
+//            self.movies = documents.map { (queryDocumentSnapshot) -> Movie in
+//                let data = queryDocumentSnapshot.data()
+//                let name = data["name"] as? String ?? ""
+//
+//
+//                return Movie(name: name, documentID: queryDocumentSnapshot.documentID)
+//            }
+//        }
+//    }
+    
+
+    func getAllMovieDataFromUser1() {
+        // Query all documents in the "user1_collection" subcollection
+        db.collectionGroup("user1")
+            .addSnapshotListener { (querySnapshot, error) in
+                guard let documents = querySnapshot?.documents else {
+                    print("No documents")
+                    return
+                }
+                
+                // Loop to get the "name" field inside each movie document
+                self.movies = documents.map { (queryDocumentSnapshot) -> Movie in
+                    let data = queryDocumentSnapshot.data()
+                    let name = data["name"] as? String ?? ""
+                    
+                    return Movie(name: name, documentID: queryDocumentSnapshot.documentID)
+                }
+            }
     }
-    }
+
+
     
     
     
